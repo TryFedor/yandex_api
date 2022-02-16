@@ -2,7 +2,9 @@ import time
 import pygame
 import requests
 
-# колесико мыши - увеличение/уменьшение карты
+#  w, a, s, d - управление картой
+#  колесико мыши - увеличение/уменьшение карты
+
 
 pygame.init()
 screen = pygame.display.set_mode((600, 450))
@@ -29,6 +31,8 @@ type = "map"
 zoom = 3
 x = 5
 y = 5
+horizontal = 10
+vertical = 10
 
 mc = MainClass
 mc.main(x, y, type, zoom)
@@ -36,6 +40,16 @@ mc.main(x, y, type, zoom)
 while True:
     time.sleep(0.001)
 
+    if zoom < 5:
+        horizontal, vertical = 10, 10
+    elif zoom < 8:
+        horizontal, vertical = 2, 2
+    elif zoom < 10:
+        horizontal, vertical = 0.5, 0.5
+    elif zoom < 13:
+        horizontal, vertical = 0.025, 0.025
+    else:
+        horizontal, vertical = 0.005, 0.005
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             pygame.quit()
@@ -49,3 +63,23 @@ while True:
                 zoom += 1
                 if not mc.main(x, y, type, zoom) or zoom > 20:
                     zoom -= 1
+
+        elif i.type == pygame.KEYDOWN:
+            if i.key == pygame.K_s:
+                y += vertical
+                if not mc.main(x, y, type, zoom):
+                    y -= vertical
+            elif i.key == pygame.K_w:
+                y -= vertical
+                mc.main(x, y, type, zoom)
+                if not mc.main(x, y, type, zoom):
+                    y += vertical
+            elif i.key == pygame.K_a:
+                x -= horizontal
+                if not mc.main(x, y, type, zoom):
+                    x += horizontal
+            elif i.key == pygame.K_d:
+                x += horizontal
+                if not mc.main(x, y, type, zoom):
+                    x -= horizontal
+
