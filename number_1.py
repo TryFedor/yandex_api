@@ -2,12 +2,14 @@ import time
 import pygame
 import requests
 
+# колесико мыши - увеличение/уменьшение карты
+
 pygame.init()
 screen = pygame.display.set_mode((600, 450))
 
 
 class MainClass():
-    def main(self: int, y: int, type: str, zoom: int):
+    def main(x: int, y: int, type: str, zoom: int):
         map_link = f'http://static-maps.yandex.ru/1.x/?ll={str(x)}%2C-{str(y)}&l={type}&z={zoom}&size=600,450&lang=ru_RU'
         response = requests.get(map_link)
         try:
@@ -24,7 +26,7 @@ class MainClass():
 
 
 type = "map"
-zoom = 3  # масштаб 
+zoom = 3
 x = 5
 y = 5
 
@@ -37,4 +39,14 @@ while True:
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             pygame.quit()
+
+        elif i.type == pygame.MOUSEBUTTONDOWN:
+            if i.button == 5:
+                zoom -= 1
+                if not mc.main(x, y, type, zoom):
+                    zoom += 1
+            elif i.button == 4:
+                zoom += 1
+                if not mc.main(x, y, type, zoom) or zoom > 20:
+                    zoom -= 1
 
