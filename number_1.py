@@ -3,11 +3,9 @@ import pygame
 import requests
 from urllib.parse import quote
 
-
 # w, a, s, d - управление картой
 # q - переключение между слоями карт
 # колесико мыши - увеличение/уменьшение карты
-
 
 pygame.init()
 screen = pygame.display.set_mode((800, 450))
@@ -31,18 +29,17 @@ def fetch_coordinates(apikey, address_):
 
 
 have_metka = False
+x_metka = 0
+y_metka = 0
 
 
 class MainClass():
-    def main(x_: float, y_: float, type: str, zoom: int, x_metka=500, y_metka=500, text=""):
-        global have_metka
-        # if have_metka:
-        if x_metka == 500 and y_metka == 500:
+    def main(x_: float, y_: float, type: str, zoom: int, text="pmwtm1"):
+        global have_metka, x_metka, y_metka
+        if not have_metka:
             map_link = f'http://static-maps.yandex.ru/1.x/?ll={str(x)}%2C-{str(y)}&l={type}&z={zoom}&size=600,450&lang=ru_RU'
         else:
             map_link = f'http://static-maps.yandex.ru/1.x/?ll={str(x)}%2C-{str(y)}&l={type}&z={zoom}&pt={str(x_metka)},{str(y_metka)},{text}&size=600,450&lang=ru_RU'
-        # else:
-        # map_link = f'http://static-maps.yandex.ru/1.x/?ll={str(x)}%2C-{str(y)}&l={type}&z={zoom}&size=600,450&lang=ru_RU'
         response = requests.get(map_link)
         print(map_link)
         try:
@@ -136,10 +133,13 @@ def CreateInputBox(x_, y_, plus_x, plus_y):
                             global x, y, mc
                             x = float(coords[0])
                             y = float(coords[1])
-                            if (x < 0): x = -x
-                            if (y < 0): y = -y
+                            if x < 0: x = -x
+                            if y < 0: y = -y
+                            global have_metka, x_metka, y_metka
                             have_metka = True
-                            mc.main(x, y, type, zoom, x, float(coords[1]), "pmwtm1")  # конго
+                            x_metka = float(coords[0])
+                            y_metka = float(coords[1])
+                            mc.main(x, y, type, zoom, "pmwtm1")  # конго
                         except Exception as ex:
                             print(ex)
                         text = ''
