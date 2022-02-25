@@ -133,8 +133,10 @@ def CreateInputBox(x_, y_, plus_x, plus_y):
                             global x, y, mc
                             x = float(coords[0])
                             y = float(coords[1])
-                            if x < 0: x = -x
-                            if y < 0: y = -y
+                            if x < 0:
+                                x = -x
+                            if y < 0:
+                                y = -y
                             global have_metka, x_metka, y_metka
                             have_metka = True
                             x_metka = float(coords[0])
@@ -203,25 +205,20 @@ while True:
                 done = True
 
         elif i.type == pygame.KEYDOWN:
-            if i.key == pygame.K_q:
-                typesIndex += 1
-                if typesIndex == len(types): typesIndex = 0
-                type = types[typesIndex]
-                mc.main(x, y, type, zoom)
-            elif i.key == pygame.K_s:
+            if i.key == pygame.K_DOWN:
                 y += vertical
                 if not mc.main(x, y, type, zoom):
                     y -= vertical
-            elif i.key == pygame.K_w:
+            elif i.key == pygame.K_UP:
                 y -= vertical
                 mc.main(x, y, type, zoom)
                 if not mc.main(x, y, type, zoom):
                     y += vertical
-            elif i.key == pygame.K_a:
+            elif i.key == pygame.K_LEFT:
                 x -= horizontal
                 if not mc.main(x, y, type, zoom):
                     x += horizontal
-            elif i.key == pygame.K_d:
+            elif i.key == pygame.K_RIGHT:
                 x += horizontal
                 if not mc.main(x, y, type, zoom):
                     x -= horizontal
