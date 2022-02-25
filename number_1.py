@@ -2,7 +2,7 @@ import time
 import pygame
 import requests
 
-#  w, a, s, d - управление картой
+#  стрелочки - управление картой
 #  колесико мыши - увеличение/уменьшение карты
 
 
@@ -65,21 +65,20 @@ while True:
                     zoom -= 1
 
         elif i.type == pygame.KEYDOWN:
-            if i.key == pygame.K_s:
+            if i.key == pygame.K_DOWN:
                 y += vertical
                 if not mc.main(x, y, type, zoom):
                     y -= vertical
-            elif i.key == pygame.K_w:
+            elif i.key == pygame.K_UP:
                 y -= vertical
                 mc.main(x, y, type, zoom)
                 if not mc.main(x, y, type, zoom):
                     y += vertical
-            elif i.key == pygame.K_a:
+            elif i.key == pygame.K_LEFT:
                 x -= horizontal
                 if not mc.main(x, y, type, zoom):
                     x += horizontal
-            elif i.key == pygame.K_d:
+            elif i.key == pygame.K_RIGHT:
                 x += horizontal
                 if not mc.main(x, y, type, zoom):
                     x -= horizontal
-
